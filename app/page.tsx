@@ -1,9 +1,9 @@
 import Image from "next/image";
-import prisma from "@/lib/db";
+import { caller } from "@/trpc/server";
 
 export default async function Home() {
   "use cache";
-  const users = await prisma.user.findMany();
+  const users = await caller.getUsers();
 
   console.log(users);
 
