@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -90,6 +91,12 @@ export function RegisterForm() {
                     disabled={isPending}
                     className="w-full"
                   >
+                    <Image
+                      src="/logos/github.svg"
+                      alt="GitHub"
+                      width={20}
+                      height={20}
+                    />
                     Continue with GitHub
                   </Button>
                   <Button
@@ -98,6 +105,12 @@ export function RegisterForm() {
                     disabled={isPending}
                     className="w-full"
                   >
+                    <Image
+                      src="/logos/google.svg"
+                      alt="Google"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
@@ -112,7 +125,7 @@ export function RegisterForm() {
                           <Input
                             type="email"
                             placeholder="m@example.com"
-                            className="bg-white dark:bg-black"
+                            className="bg-white"
                             {...field}
                           />
                         </FormControl>
@@ -130,7 +143,7 @@ export function RegisterForm() {
                           <Input
                             type="password"
                             placeholder="********"
-                            className="bg-white dark:bg-black"
+                            className="bg-white"
                             {...field}
                           />
                         </FormControl>
@@ -148,7 +161,7 @@ export function RegisterForm() {
                           <Input
                             type="password"
                             placeholder="********"
-                            className="bg-white dark:bg-black"
+                            className="bg-white"
                             {...field}
                           />
                         </FormControl>

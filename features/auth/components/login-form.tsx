@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -82,6 +83,12 @@ export function LoginForm() {
                     disabled={isPending}
                     className="w-full"
                   >
+                    <Image
+                      src="/logos/github.svg"
+                      alt="GitHub"
+                      width={20}
+                      height={20}
+                    />
                     Continue with GitHub
                   </Button>
                   <Button
@@ -90,6 +97,12 @@ export function LoginForm() {
                     disabled={isPending}
                     className="w-full"
                   >
+                    <Image
+                      src="/logos/google.svg"
+                      alt="Google"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
@@ -104,7 +117,7 @@ export function LoginForm() {
                           <Input
                             type="email"
                             placeholder="m@example.com"
-                            className="bg-white dark:bg-black"
+                            className="bg-white"
                             {...field}
                           />
                         </FormControl>
@@ -122,7 +135,7 @@ export function LoginForm() {
                           <Input
                             type="password"
                             placeholder="********"
-                            className="bg-white dark:bg-black"
+                            className="bg-white"
                             {...field}
                           />
                         </FormControl>

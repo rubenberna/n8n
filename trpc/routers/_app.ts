@@ -3,7 +3,6 @@ import prisma from "@/lib/db";
 
 export const appRouter = createTRPCRouter({
   getUsers: protectedProcedure.query(({ ctx }) => {
-    console.log(ctx.auth);
     return prisma.user.findMany({
       where: {
         id: ctx.auth.user.id,
