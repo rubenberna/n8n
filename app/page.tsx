@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { caller } from "@/trpc/server";
+import { prefetch, HydrateClient, trpc } from "@/trpc/server";
+import { Client } from "@/features/client";
+import { Suspense } from "react";
 
 export default async function Home() {
   "use cache";
-  const users = await caller.getUsers();
-
-  console.log(users);
+  prefetch(trpc.getUsers.queryOptions());
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -39,6 +39,11 @@ export default async function Home() {
             </a>{" "}
             center.
           </p>
+          <HydrateClient>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Client />
+            </Suspense>
+          </HydrateClient>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
