@@ -18,8 +18,14 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/features/*": ["features/*"],
+      "@/trpc/*": ["trpc/*"],
+      "@/prisma/*": ["prisma/*"]
     }
   },
   "include": [
