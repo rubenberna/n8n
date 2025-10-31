@@ -25,7 +25,8 @@
       "@/hooks/*": ["hooks/*"],
       "@/features/*": ["features/*"],
       "@/trpc/*": ["trpc/*"],
-      "@/prisma/*": ["prisma/*"]
+      "@/prisma/*": ["prisma/*"],
+      "@/inngest/*": ["inngest/*"]
     }
   },
   "include": [

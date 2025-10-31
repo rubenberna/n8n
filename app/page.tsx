@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { requireAuth } from "@/lib/auth/auth-utils";
-import { caller } from "@/trpc/server";
+import { Suspense } from "react";
+import { BaseNode } from "@/features/baseNode/base-node";
 
 export default async function Home() {
   await requireAuth();
 
-  const data = await caller.getUsers();
-  console.log(data);
+  // prefetch(trpc.getWorkflows.queryOptions());
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -51,6 +51,9 @@ export default async function Home() {
           {/* {session && (
             <Button onClick={() => authClient.signOut()}>Logout</Button>
           )} */}
+          <Suspense fallback={<div>Loading...</div>}>
+            <BaseNode />
+          </Suspense>
         </div>
       </main>
     </div>
