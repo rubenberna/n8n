@@ -32,13 +32,6 @@ export function BaseNode() {
   console.log(workflows);
   return (
     <div>
-      <div className="flex flex-col gap-2 max-h-40 overflow-y-auto mb-3">
-        {workflows?.map((workflow: any) => (
-          <div key={workflow.id} className="text-sm text-zinc-500">
-            {workflow.name}
-          </div>
-        ))}
-      </div>
       <Button
         onClick={() => createWorkflow.mutate()}
         disabled={createWorkflow.isPending}
