@@ -1,19 +1,17 @@
-import prisma from "@/lib/db";
 import { inngest } from "./client";
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
 
-export const helloWorld = inngest.createFunction(
-  { id: "hello-world" },
-  { event: "test/hello.world" },
+export const executeAi = inngest.createFunction(
+  { id: "execute-ai" },
+  { event: "execute/ai" },
   async ({ step }) => {
-    await step.sleep("wait-a-moment", "1s");
-    await step.run("create-workflow", async () => {
-      await prisma.workflow.create({
-        data: {
-          name: "New Workflow",
-          description: "New Workflow Description",
-        },
-      });
+    const { steps } = await step.ai.wrap("openai-generate-text", generateText, {
+      model: openai("gpt-4o-mini"),
+      system: "You are a helpful assistant.",
+      prompt: "What is 2 + 2",
     });
-    return { success: true, message: "Job queued" };
+
+    return steps;
   }
 );

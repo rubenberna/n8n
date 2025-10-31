@@ -5,7 +5,6 @@ import { BaseNode } from "@/features/baseNode/base-node";
 
 export default async function Home() {
   await requireAuth();
-
   // prefetch(trpc.getWorkflows.queryOptions());
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
