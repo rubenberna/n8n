@@ -1,5 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "../init";
-import prisma from "@/lib/db";
+import prisma from "@/lib/db/db";
 import { inngest } from "@/inngest/client";
 
 export const appRouter = createTRPCRouter({
