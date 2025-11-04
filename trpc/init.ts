@@ -46,7 +46,7 @@ export const premiumProcedure = protectedProcedure.use(
       customer.activeSubscriptions.length === 0
     ) {
       throw new TRPCError({
-        code: "UNAUTHORIZED",
+        code: "FORBIDDEN",
         message: "Active subscription required",
       });
     }
