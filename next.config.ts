@@ -1,4 +1,4 @@
-import {withSentryConfig} from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs";
 import { withWorkflow } from "workflow/next";
 import type { NextConfig } from "next";
 
@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
   // experimental: {
   //   cacheComponents: true,
   // },
+  devIndicators: false,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/workflows",
+        permanent: false, // true would be applied to other next js projects
+      },
+    ];
+  },
 };
 
 export default withSentryConfig(withWorkflow(nextConfig), {

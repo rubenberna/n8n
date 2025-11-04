@@ -26,7 +26,8 @@
       "@/features/*": ["features/*"],
       "@/trpc/*": ["trpc/*"],
       "@/prisma/*": ["prisma/*"],
-      "@/inngest/*": ["inngest/*"]
+      "@/inngest/*": ["inngest/*"],
+      "@/app/*": ["app/*"]
     }
   },
   "include": [
