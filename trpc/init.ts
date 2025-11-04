@@ -2,6 +2,7 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import { cache } from "react";
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
+import { polarClient } from "@/lib/polar/polar";
 
 export const createTRPCContext = cache(async () => {
   /**
@@ -34,3 +35,22 @@ export const protectedProcedure = baseProcedure.use(async ({ next, ctx }) => {
 
   return next({ ctx: { ...ctx, auth: session } });
 });
+export const premiumProcedure = protectedProcedure.use(
+  async ({ next, ctx }) => {
+    const customer = await polarClient.customers.getStateExternal({
+      externalId: ctx.auth.user.id,
+    });
+
+    if (
+      !customer?.activeSubscriptions ||
+      customer.activeSubscriptions.length === 0
+    ) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Active subscription required",
+      });
+    }
+
+    return next({ ctx: { ...ctx, customer } });
+  }
+);
