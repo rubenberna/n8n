@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/client";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,14 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TRPCReactProvider>
-          <Toaster />
-          {children}
-        </TRPCReactProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TRPCReactProvider>
+            <NuqsAdapter>
+              <Toaster />
+              {children}
+            </NuqsAdapter>
+          </TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
