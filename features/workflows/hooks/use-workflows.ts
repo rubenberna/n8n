@@ -31,3 +31,17 @@ export function useCreateWorkflow() {
     })
   );
 }
+
+export function useRemoveWorkflow() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    trpc.workflows.remove.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(`Workflow ${data.name} removed successfully`);
+        queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
+      },
+    })
+  );
+}
