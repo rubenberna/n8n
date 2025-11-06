@@ -4,7 +4,9 @@ import { requireAuth } from "@/lib/auth/auth-utils";
 import { HydrateClient } from "@/trpc/server";
 import {
   WorkflowsContainer,
+  WorkflowsError,
   WorkflowsList,
+  WorkflowsLoading,
 } from "@/features/workflows/components/workflows";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
@@ -22,8 +24,8 @@ export default async function Page({ searchParams }: Props) {
   return (
     <WorkflowsContainer>
       <HydrateClient>
-        <ErrorBoundary fallback={<div>Error</div>}>
-          <Suspense fallback={<div>Loading...</div>}>
+        <ErrorBoundary fallback={<WorkflowsError />}>
+          <Suspense fallback={<WorkflowsLoading />}>
             <WorkflowsList />
           </Suspense>
         </ErrorBoundary>
