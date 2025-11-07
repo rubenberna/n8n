@@ -18,7 +18,7 @@ interface WorkflowNodeProps {
 export const WorkflowNode = memo(
   ({
     children,
-    showToolbar = true,
+    showToolbar = false,
     onDelete,
     onSettings,
     name,
