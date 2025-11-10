@@ -22,6 +22,8 @@ import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
 import { nodeComponents } from "@/config/node-components";
 import "@xyflow/react/dist/style.css";
 import { AddNodeButton } from "./add-node-button";
+import { editorAtom } from "../store/atoms";
+import { useSetAtom } from "jotai";
 
 export function EditorLoading() {
   return <LoadingView message="Loading editor..." />;
@@ -36,6 +38,7 @@ export function Editor({ workflowId }: { workflowId: string }) {
   const { data: workflow } = useSuspenseWorkflow(workflowId);
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes ?? []);
   const [edges, setEdges] = useState<Edge[]>(workflow.edges ?? []);
+  const setEditor = useSetAtom(editorAtom);
 
   // Use resolvedTheme to handle "system" theme, fallback to "light" if undefined
   const colorMode = (resolvedTheme ?? theme ?? "light") as "light" | "dark";
@@ -57,7 +60,7 @@ export function Editor({ workflowId }: { workflowId: string }) {
   );
 
   return (
-    <div className="size-full">
+    <div className="size-full bg-background">
       <ReactFlow
         colorMode={colorMode}
         nodes={nodes}
@@ -65,11 +68,17 @@ export function Editor({ workflowId }: { workflowId: string }) {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onInit={setEditor}
         nodeTypes={nodeComponents}
         fitView
         proOptions={{
           hideAttribution: true,
         }}
+        snapGrid={[10, 10]}
+        snapToGrid
+        panOnScroll
+        panOnDrag={false}
+        selectionOnDrag
       >
         <Background />
         <Controls />
