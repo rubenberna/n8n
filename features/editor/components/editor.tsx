@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   ReactFlow,
   applyNodeChanges,
@@ -24,6 +24,8 @@ import "@xyflow/react/dist/style.css";
 import { AddNodeButton } from "./add-node-button";
 import { editorAtom } from "../store/atoms";
 import { useSetAtom } from "jotai";
+import { NodeType } from "@/lib/generated/prisma/enums";
+import { ExecuteWorkflowButton } from "./execute-workflow-button";
 
 export function EditorLoading() {
   return <LoadingView message="Loading editor..." />;
@@ -59,8 +61,13 @@ export function Editor({ workflowId }: { workflowId: string }) {
     []
   );
 
+  const hasManualTrigger = useMemo(() => {
+    return nodes.some((node) => node.type === NodeType.MANUAL_TRIGGER);
+  }, [nodes]);
+
+  console.log(hasManualTrigger);
   return (
-    <div className="size-full bg-background">
+    <div className="h-[calc(100vh-64px)] w-full bg-background">
       <ReactFlow
         colorMode={colorMode}
         nodes={nodes}
@@ -86,6 +93,11 @@ export function Editor({ workflowId }: { workflowId: string }) {
         <Panel position="top-right">
           <AddNodeButton />
         </Panel>
+        {hasManualTrigger && (
+          <Panel position="bottom-center">
+            <ExecuteWorkflowButton workflowId={workflowId} />
+          </Panel>
+        )}
       </ReactFlow>
     </div>
   );
