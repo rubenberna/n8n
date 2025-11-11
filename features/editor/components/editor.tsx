@@ -65,7 +65,6 @@ export function Editor({ workflowId }: { workflowId: string }) {
     return nodes.some((node) => node.type === NodeType.MANUAL_TRIGGER);
   }, [nodes]);
 
-  console.log(hasManualTrigger);
   return (
     <div className="h-[calc(100vh-64px)] w-full bg-background">
       <ReactFlow
