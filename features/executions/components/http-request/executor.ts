@@ -1,10 +1,17 @@
-import { NodeExecutor } from "@/features/executions/types";
+import Handlebars from "handlebars";
 import { NonRetriableError } from "inngest";
+import { NodeExecutor } from "@/features/executions/types";
 import ky, { Options as KyOptions } from "ky";
 
+Handlebars.registerHelper("json", (context) => {
+  const jsonString = JSON.stringify(context, null, 2);
+  const safeString = new Handlebars.SafeString(jsonString);
+  return safeString;
+});
+
 type HttpRequestData = {
-  variableName?: string;
-  endpoint?: string;
+  variableName: string;
+  endpoint: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: string;
 };
@@ -17,21 +24,31 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
   // Publish 'loading' state for http request
 
   if (!data.endpoint) {
-    throw new NonRetriableError("HTTP Request: Endpoint is required");
+    throw new NonRetriableError("HTTP Request node: Endpoint is required");
   }
+
+  if (!data.method) {
+    throw new NonRetriableError("HTTP Request node: Method is required");
+  }
+
   if (
     !data.variableName ||
     !/^[A-Za-z_$][A-Za-z0-9_]*$/.test(data.variableName)
   ) {
-    throw new NonRetriableError("HTTP Request: Variable name not configured");
+    throw new NonRetriableError(
+      "HTTP Request node: Variable name not configured"
+    );
   }
 
   const result = await step.run("http-request", async () => {
-    const endpoint = data.endpoint!;
-    const method = data.method ?? "GET";
+    // The context is the previous node data. Handlebars will interpolate the variables in the endpoint.
+    const endpoint = Handlebars.compile(data.endpoint)(context);
+    const method = data.method;
     const options: KyOptions = { method };
     if (["POST", "PUT", "PATCH"].includes(method)) {
-      options.body = data.body;
+      const resolvedBody = Handlebars.compile(data.body)(context);
+      JSON.parse(resolvedBody);
+      options.body = resolvedBody;
       options.headers = {
         "Content-Type": "application/json",
       };
@@ -52,7 +69,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
 
     return {
       ...context,
-      [data.variableName! as string]: responsePayload,
+      [data.variableName]: responsePayload,
     };
   });
 
