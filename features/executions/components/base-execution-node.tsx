@@ -5,12 +5,9 @@ import { Position, useReactFlow } from "@xyflow/react";
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { memo, type ReactNode } from "react";
-import {
-  BaseNode,
-  BaseNodeContent,
-} from "../../../components/react-flow/base-node";
-import { BaseHandle } from "../../../components/react-flow/base-handle";
-import { WorkflowNode } from "../../../components/workflow-node";
+import { BaseNode, BaseNodeContent } from "@/components/react-flow/base-node";
+import { BaseHandle } from "@/components/react-flow/base-handle";
+import { WorkflowNode } from "@/components/workflow-node";
 import {
   type NodeStatus,
   NodeStatusIndicator,
@@ -60,7 +57,7 @@ export const BaseExecutionNode = memo(
         onDelete={handleDelete}
       >
         <NodeStatusIndicator status={status} variant="border">
-          <BaseNode onDoubleClick={onDoubleClick}>
+          <BaseNode onDoubleClick={onDoubleClick} status={status}>
             <BaseNodeContent>
               {typeof Icon === "string" ? (
                 <Image src={Icon} alt={name} width={16} height={16} />
