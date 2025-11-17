@@ -1,7 +1,7 @@
 import { NodeExecutor } from "@/features/executions/types";
 import { Realtime } from "@inngest/realtime";
-import { manualTriggerChannel } from "@/inngest/channels/manual-trigger";
-type ManualTriggerData = Record<string, unknown>;
+import { googleFormTriggerChannel } from "@/inngest/channels/google-form-trigger";
+type GoogleFormData = Record<string, unknown>;
 
 const emitStatus = async (
   publish: Realtime.PublishFn,
@@ -9,21 +9,21 @@ const emitStatus = async (
   status: "loading" | "success" | "error"
 ) => {
   await publish(
-    manualTriggerChannel().status({
+    googleFormTriggerChannel().status({
       nodeId,
       status,
     })
   );
 };
 
-export const manualTriggerExecutor: NodeExecutor<ManualTriggerData> = async ({
+export const googleFormExecutor: NodeExecutor<GoogleFormData> = async ({
   context,
   nodeId,
   step,
   publish,
 }) => {
   await emitStatus(publish, nodeId, "loading");
-  const result = await step.run("manual-trigger", async () => context);
+  const result = await step.run("google-form-trigger", async () => context);
   await emitStatus(publish, nodeId, "success");
   return result;
 };
