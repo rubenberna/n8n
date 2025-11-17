@@ -7,6 +7,7 @@ import { getExecutor } from "@/features/executions/lib/executor-registry";
 import { httpRequestChannel } from "@/inngest/channels/http-request";
 import { manualTriggerChannel } from "@/inngest/channels/manual-trigger";
 import { googleFormTriggerChannel } from "@/inngest/channels/google-form-trigger";
+import { polarTriggerChannel } from "@/inngest/channels/polar-trigger";
 
 export const executeWorkflow = inngest.createFunction(
   { id: "execute-workflow" },
@@ -16,6 +17,7 @@ export const executeWorkflow = inngest.createFunction(
       httpRequestChannel(),
       manualTriggerChannel(),
       googleFormTriggerChannel(),
+      polarTriggerChannel(),
     ],
   },
   async ({ event, step, publish }) => {

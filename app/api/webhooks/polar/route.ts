@@ -12,28 +12,26 @@ export async function POST(request: NextRequest) {
       );
     }
     const body = await request.json();
-    const formData = {
-      formId: body.formId,
-      formTitle: body.formTitle,
-      responseId: body.responseId,
-      timestamp: body.timestamp,
-      respondentEmail: body.respondentEmail,
-      responses: body.responses,
-      raw: body,
+    const polarData = {
+      eventId: body.id,
+      eventType: body.type,
+      livemode: body.livemode,
+      timestamp: body.created,
+      raw: body?.data?.object,
     };
 
     // Trigger an Inngest job
     await sendWorkflowExecutionJob({
       workflowId,
       initialData: {
-        googleForm: formData,
+        polar: polarData,
       },
     });
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    console.error("Google form webhook error: ", error);
+    console.error("Polar webhook error: ", error);
     return NextResponse.json(
-      { success: false, error: "Failed to process Google form webhook" },
+      { success: false, error: "Failed to process Polar webhook" },
       { status: 500 }
     );
   }

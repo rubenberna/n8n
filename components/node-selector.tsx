@@ -38,6 +38,12 @@ const triggerNodes: NodeTypeOption[] = [
     description: "Runs the flow when a Google Form is submitted",
     icon: "/logos/googleform.svg",
   },
+  {
+    type: NodeType.POLAR_TRIGGER,
+    label: "Polar event",
+    description: "Runs the flow when a Polar event is received",
+    icon: "/logos/polar.svg",
+  },
 ];
 
 const executionNodes: NodeTypeOption[] = [
