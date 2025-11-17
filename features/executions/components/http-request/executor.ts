@@ -12,9 +12,9 @@ Handlebars.registerHelper("json", (context) => {
 });
 
 type HttpRequestData = {
-  variableName: string;
-  endpoint: string;
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  variableName?: string;
+  endpoint?: string;
+  method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: string;
 };
 
@@ -41,28 +41,27 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
   // Emit 'loading' state for http request
   await emitStatus(publish, nodeId, "loading");
 
-  if (!data.endpoint) {
-    emitStatus(publish, nodeId, "error");
-    throw new NonRetriableError("HTTP Request node: Endpoint is required");
-  }
-
-  if (!data.method) {
-    await emitStatus(publish, nodeId, "error");
-    throw new NonRetriableError("HTTP Request node: Method is required");
-  }
-
-  if (
-    !data.variableName ||
-    !/^[A-Za-z_$][A-Za-z0-9_]*$/.test(data.variableName)
-  ) {
-    await emitStatus(publish, nodeId, "error");
-    throw new NonRetriableError(
-      "HTTP Request node: Variable name not configured"
-    );
-  }
-
   try {
     const result = await step.run("http-request", async () => {
+      if (!data.endpoint) {
+        emitStatus(publish, nodeId, "error");
+        throw new NonRetriableError("HTTP Request node: Endpoint is required");
+      }
+
+      if (!data.method) {
+        await emitStatus(publish, nodeId, "error");
+        throw new NonRetriableError("HTTP Request node: Method is required");
+      }
+
+      if (
+        !data.variableName ||
+        !/^[A-Za-z_$][A-Za-z0-9_]*$/.test(data.variableName)
+      ) {
+        await emitStatus(publish, nodeId, "error");
+        throw new NonRetriableError(
+          "HTTP Request node: Variable name not configured"
+        );
+      }
       // The context is the previous node data. Handlebars will interpolate the variables in the endpoint.
       const endpoint = Handlebars.compile(data.endpoint)(context);
       const method = data.method;

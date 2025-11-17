@@ -1,19 +1,19 @@
 import { memo, useState } from "react";
 import type { NodeProps } from "@xyflow/react";
 import { BaseTriggerNode } from "../base-trigger-node";
-import { GoogleFormTriggerDialog } from "./dialog";
+import { PolarTriggerDialog } from "./dialog";
 import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
-import { fetchGoogleFormTriggerRealtimeToken } from "./actions";
-import { GOOGLE_FORM_TRIGGER_NAME } from "@/inngest/channels/google-form-trigger";
+import { fetchPolarTriggerRealtimeToken } from "./actions";
+import { POLAR_TRIGGER_CHANNEL_NAME } from "@/inngest/channels/polar-trigger";
 
-export const GoogleFormTriggerNode = memo((props: NodeProps) => {
+export const PolarTriggerNode = memo((props: NodeProps) => {
   const [open, setDialogOpen] = useState(false);
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    channel: GOOGLE_FORM_TRIGGER_NAME,
+    channel: POLAR_TRIGGER_CHANNEL_NAME,
     topic: "status",
-    refreshToken: fetchGoogleFormTriggerRealtimeToken,
+    refreshToken: fetchPolarTriggerRealtimeToken,
   });
 
   const handleSettings = () => {
@@ -22,12 +22,12 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
 
   return (
     <>
-      <GoogleFormTriggerDialog open={open} onOpenChange={setDialogOpen} />
+      <PolarTriggerDialog open={open} onOpenChange={setDialogOpen} />
       <BaseTriggerNode
         {...props}
-        icon="/logos/googleform.svg"
-        name="Google Form"
-        description="When a form is submitted"
+        icon="/logos/polar.svg"
+        name="Polar"
+        description="When a Polar event is received"
         status={nodeStatus}
         onSettings={handleSettings}
         onDoubleClick={handleSettings}
@@ -36,4 +36,4 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
   );
 });
 
-GoogleFormTriggerNode.displayName = "GoogleFormTrigger";
+PolarTriggerNode.displayName = "PolarTriggerNode";
