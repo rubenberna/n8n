@@ -10,6 +10,7 @@ import { PAGINATION } from "@/config/constants";
 import type { Node, Edge } from "@xyflow/react";
 import { NodeType } from "@/lib/generated/prisma/enums";
 import { inngest } from "@/inngest/client";
+import { sendWorkflowExecutionJob } from "@/inngest/utils";
 
 export const workflowsRouter = createTRPCRouter({
   execute: protectedProcedure
@@ -23,13 +24,7 @@ export const workflowsRouter = createTRPCRouter({
         where: { userId: ctx.auth.user.id, id: input.id },
       });
 
-      console.log("Sending workflow to inngest", input.id);
-
-      await inngest.send({
-        name: "workflows/execute.workflow",
-        data: { workflowId: input.id },
-      });
-
+      await sendWorkflowExecutionJob({ workflowId: input.id });
       return workflow;
     }),
   create: premiumProcedure.mutation(({ ctx }) => {

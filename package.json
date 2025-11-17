@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "ngrok:dev": "dotenv ngrok http --url=$NGROK_URL 3000",
     "inngest:dev": "inngest-cli dev",
-    "dev:all": "mprocs"
+    "dev:all": "dotenv mprocs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.59",
@@ -91,6 +92,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/toposort": "^2.0.7",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
     "inngest-cli": "^1.13.0",
